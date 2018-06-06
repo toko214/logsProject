@@ -10,7 +10,8 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
         self.setupUi(self)
         self.pushButton_2.clicked.connect(self.browse_file)
         self.pushButton.clicked.connect(self.analyze)
-        self.dir_path = os.getcwd() + "/logs"
+        self.dir_path = os.getcwd() + "\logs\\"
+        print self.dir_path
         if not os.path.exists(os.path.dirname(self.dir_path)):
             os.makedirs(os.path.dirname(self.dir_path))
 

@@ -1,0 +1,77 @@
+import argparse
+import os
+import struct
+import datetime
+import hashlib
+import csv
+
+chunkSize = 256 * 1024
+
+script_dir = os.path.dirname(__file__)
+csvFile = open('hey.csv', 'w')
+csvWriter = csv.writer(csvFile, delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
+csvWriter.writerow(
+    ('Fetch Count', 'Last Fetch', 'Last Modified', 'Frecency', 'Expiration', 'Flags', 'URL', 'Key Hash'))
+
+def ParseCacheFile(parseFile):
+    print "parsing file: {0}".format(parseFile.name)
+    fileSize = os.path.getsize(parseFile.name)
+    parseFile.seek(-4, os.SEEK_END)
+    # print parseFile.tell()
+    # print fileSize
+    metaStart = struct.unpack('>I', parseFile.read(4))[0]
+    # print metaStart
+    numHashChunks = metaStart / chunkSize
+    if metaStart % chunkSize:
+        numHashChunks += 1
+    # print 4 + numHashChunks * 2
+    parseFile.seek(metaStart + 4 + numHashChunks * 2, os.SEEK_SET)
+    # print parseFile.tell()
+    version = struct.unpack('>I', parseFile.read(4))[0]
+    # if version > 1 :
+    # TODO quit with error
+    fetchCount = struct.unpack('>I', parseFile.read(4))[0]
+    lastFetchInt = struct.unpack('>I', parseFile.read(4))[0]
+    lastModInt = struct.unpack('>I', parseFile.read(4))[0]
+    frecency = struct.unpack('>I', parseFile.read(4))[0]
+    expireInt = struct.unpack('>I', parseFile.read(4))[0]
+    keySize = struct.unpack('>I', parseFile.read(4))[0]
+    flags = struct.unpack('>I', parseFile.read(4))[0] if version >= 2 else 0
+    key = parseFile.read(keySize)
+    key_hash = hashlib.sha1(key).hexdigest().upper()
+
+    csvWriter.writerow((fetchCount,
+                        datetime.datetime.fromtimestamp(lastFetchInt),
+                        datetime.datetime.fromtimestamp(lastModInt),
+                        hex(frecency),
+                        datetime.datetime.fromtimestamp(expireInt),
+                        flags,
+                        key,
+                        key_hash))
+    print "version: {0}".format(version)
+    print "fetchCount: {0}".format(fetchCount)
+    print "lastFetch: {0}".format(datetime.datetime.fromtimestamp(lastFetchInt))
+    print "lastMod: {0}".format(datetime.datetime.fromtimestamp(lastModInt))
+    print "frecency: {0}".format(hex(frecency))
+    print "expire: {0}".format(datetime.datetime.fromtimestamp(expireInt))
+    print "keySize: {0}".format(keySize)
+    print "flags: {0}".format(flags)
+    print "key: {0}".format(key)
+    print "key sha1: {0}\n".format(key_hash)
+
+# ParseCacheFile(testFile)
+# procPath = script_dir + '/' + testDir
+
+
+def do_cache():
+    doCsv = True
+    csvFile = open('hey.csv', 'w')
+    csvWriter = csv.writer(csvFile, delimiter=',', quoting=csv.QUOTE_NONNUMERIC)
+    csvWriter.writerow(
+        ('Fetch Count', 'Last Fetch', 'Last Modified', 'Frecency', 'Expiration', 'Flags', 'URL', 'Key Hash'))
+    procPath = r'C:\Users\tomer\AppData\Local\Mozilla\Firefox\Profiles\6h5734qn.default\cache2\entries'
+    fileList = os.listdir(procPath)
+    for filePath in fileList:
+        file = open(procPath + '/' + filePath, 'r')
+        ParseCacheFile(file)
+do_cache()

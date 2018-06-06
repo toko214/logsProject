@@ -2,6 +2,7 @@ from PyQt4 import QtGui, QtCore
 import sys
 import design
 import MainEngine
+import os
 
 class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -9,6 +10,9 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
         self.setupUi(self)
         self.pushButton_2.clicked.connect(self.browse_file)
         self.pushButton.clicked.connect(self.analyze)
+        self.dir_path = os.getcwd() + "/logs"
+        if not os.path.exists(os.path.dirname(self.dir_path)):
+            os.makedirs(os.path.dirname(self.dir_path))
 
     def analyze(self):
         root = self.treeWidget.invisibleRootItem()

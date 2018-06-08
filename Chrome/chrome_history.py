@@ -41,6 +41,6 @@ def get_chrome_history():
                     else:
                         THE_DICT[url[0]]['visit_time'].append(str(ut.real_time_google(visit[2])))
                         THE_DICT[url[0]]['visit_duration'].append(str(ut.real_time_google(visit[6], True)))
-        THE_DICT['google_search'] = results4
+        #THE_DICT['google_search'] = results4
         return [THE_DICT]
     return ['err', 1, select_statement2]

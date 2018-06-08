@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>569</width>
+    <height>297</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Chrome</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>561</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="indentation">
+     <number>0</number>
+    </property>
+    <attribute name="headerVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="headerShowSortIndicator" stdset="0">
+     <bool>true</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string/>
+     </property>
+    </column>
+    <item>
+     <property name="text">
+      <string>Chrome Passowrds</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/key.png</normaloff>icons/key.png</iconset>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Chrome Bookmarks</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/notebook.png</normaloff>icons/notebook.png</iconset>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Chrome History</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/history.png</normaloff>icons/history.png</iconset>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Chrome Cookies</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/cookie.png</normaloff>icons/cookie.png</iconset>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Chrome Cache</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/accounting.png</normaloff>icons/accounting.png</iconset>
+     </property>
+    </item>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>569</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave_Selected_Items"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionFind"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelect_All"/>
+    <addaction name="actionDeselect_All"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSave_Selected_Items">
+   <property name="text">
+    <string>Save Selected Items</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="text">
+    <string>Find</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="text">
+    <string>Select All</string>
+   </property>
+  </action>
+  <action name="actionDeselect_All">
+   <property name="text">
+    <string>Deselect All</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -10,10 +10,10 @@ class MainEngine:
     def __init__(self):
         pass
 
-    def do(self,objs,where_to_save):
+    def do(self, objs):
         f = open('logs/erros.txt','a')
         if objs['Chrome']['state'] > 0:
-            ch_obj = ce.ChromeEngine(where_to_save)
+            ch_obj = ce.ChromeEngine()
             if ch_obj.is_valid:
                 state = objs['Chrome']['state']
                 arg = ""
@@ -21,7 +21,7 @@ class MainEngine:
                     arg = objs['Chrome']
                 else:
                     arg = 'all'
-                t = threading.Thread(target=ch_obj.do,args=(arg,where_to_save,))
+                t = threading.Thread(target=ch_obj.do)
                 t.start()
             else:
                 f.write(str(datetime.datetime.now()) + "  "+err.errs[100])

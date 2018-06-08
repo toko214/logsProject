@@ -7,12 +7,12 @@ this file uses the skype_info to get the data from skype.
 
 import skype_info
 import os
-import datetime
 import threading
 import erros as err
 
 class SkypeEngine():
     def __init__(self):
+        self.name = "skype"
         if skype_info.PATH == []:
             self.is_valid = False
         else:
@@ -24,7 +24,6 @@ class SkypeEngine():
             self.info_bank = {}
 
     def do(self, props):
-        print "k"
         if props == 'all':
             t = threading.Thread(target=self.get_messages)
             t.start()
@@ -49,15 +48,11 @@ class SkypeEngine():
         for i in skype_info.PATH:
             mseg = skype_info.get_messages(i)
             if mseg[0] == 'err':
-                st = "-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + err.errs[mseg[1]] + " - " + mseg[2] + "\r\n"
-                if len(mseg) > 3:
-                    for j in mseg[3:]:
-                        st += " - " + str(j) + "\r\n"
-                f.write(st + "-----------------\r\n")
+                err.error_handle([mseg[1:]], self.name)
             else:
                 messages.append(mseg[0])
         if messages == []:
-            f.write("-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + "No Skype Messages from all skype paths\r\n-----------------\r\n")
+            err.error_handle([[201, str(skype_info.PATH)]], self.name)
         else:
             self.info_bank['messages'] = messages
             c = open(self.dir_path + "messages.txt",'w')
@@ -71,15 +66,11 @@ class SkypeEngine():
         for i in skype_info.PATH:
             acc = skype_info.get_accounts(i)
             if acc[0] == 'err':
-                st = "-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + err.errs[acc[1]] + " - " + acc[2] + "\r\n"
-                if len(acc) > 3:
-                    for j in acc[3:]:
-                        st += " - " + str(j) + "\r\n"
-                f.write(st + "-----------------\r\n")
+                err.error_handle([acc[1:]], self.name)
             else:
                 accounts.append(acc[0])
         if accounts == []:
-            f.write("-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + "No Skype Accounts from all skype paths\r\n-----------------\r\n")
+            err.error_handle([[202, str(skype_info.PATH)]], self.name)
         else:
             self.info_bank['accounts'] = accounts
             c = open(self.dir_path + "accounts.txt",'w')
@@ -94,15 +85,11 @@ class SkypeEngine():
         for i in skype_info.PATH:
             conc = skype_info.get_contacts(i)
             if conc[0] == 'err':
-                st = "-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + err.errs[conc[1]] + " - " + conc[2] + "\r\n"
-                if len(conc) > 3:
-                    for j in conc[3:]:
-                        st += " - " + str(j) + "\r\n"
-                f.write(st + "-----------------\r\n")
+                err.error_handle([conc[1:]], self.name)
             else:
                 contacts.append(conc[0])
         if contacts == []:
-            f.write("-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + "No Skype Contacts from all skype paths\r\n-----------------\r\n")
+            err.error_handle([[203, str(skype_info.PATH)]], self.name)
         else:
             self.info_bank['contacts'] = contacts
             c = open(self.dir_path + "contacts.txt",'w')

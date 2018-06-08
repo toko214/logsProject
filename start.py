@@ -3,17 +3,74 @@ import sys
 import design
 import MainEngine
 import os
+import PyQt4
+import chrome_ui
+import chrome_pass
+import chrome_history
+
+
+class ChromeHistoryApp(QtGui.QMainWindow, chrome_history.Ui_MainWindow):
+    def __init__(self, parent=None, items=None):
+        super(ChromeHistoryApp, self).__init__(parent)
+        self.setupUi(self)
+        for i in items:
+            #j = QtGui.QTreeWidgetItem(self.treeWidget, [str(items[i]['url']), str(items[i]['visit_time']), str(items[i]['visit_duration']),len(items[i]['visit_time'])])
+            j = QtGui.QTreeWidgetItem(self.treeWidget, [items[i]['url'],str(items[i]['visit_time']),str(items[i]['visit_duration']),str(len(items[i]['visit_time']))])
+            self.treeWidget.addTopLevelItem(j)
+
+    def closeEvent(self, event):
+        self.parent().setDisabled(False)
+        self.close()
+
+class ChromePassApp(QtGui.QMainWindow, chrome_pass.Ui_MainWindow):
+    def __init__(self, parent=None, items=None):
+        super(ChromePassApp, self).__init__(parent)
+        self.setupUi(self)
+        for i in items:
+            j = QtGui.QTreeWidgetItem(self.treeWidget, [i[0], i[1], i[2]])
+            self.treeWidget.addTopLevelItem(j)
+
+    def closeEvent(self, event):
+        self.parent().setDisabled(False)
+        self.close()
+
+class ChromeApp(QtGui.QMainWindow, chrome_ui.Ui_MainWindow):
+    def __init__(self,parent=None):
+        super(ChromeApp, self).__init__(parent)
+        self.setupUi(self)
+        self.treeWidget.itemDoubleClicked.connect(self.tree_handle)
+
+    def tree_handle(self, index):
+        if index.text(0) == "Chrome Passowrds":
+            self.setDisabled(True)
+            passwords = MainEngine.ce.ChromeEngine().get_chrome_saved_password()
+            form = ChromePassApp(self, items=passwords)
+            form.show()
+        if index.text(0) == "Chrome History":
+            self.setDisabled(True)
+            history = MainEngine.ce.ChromeEngine().get_chrome_history()
+            form = ChromeHistoryApp(self, items=history)
+            form.show()
+    def closeEvent(self, event):
+        self.parent().setDisabled(False)
+        self.close()
+
 
 class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
     def __init__(self, parent=None):
         super(ExampleApp, self).__init__(parent)
         self.setupUi(self)
-        self.pushButton_2.clicked.connect(self.browse_file)
-        self.pushButton.clicked.connect(self.analyze)
+        # self.pushButton_2.clicked.connect(self.browse_file)
+        # self.pushButton.clicked.connect(self.analyze)
         self.dir_path = os.getcwd() + "\logs\\"
-        print self.dir_path
+        self.treeWidget_2.itemDoubleClicked.connect(self.gg)
         if not os.path.exists(os.path.dirname(self.dir_path)):
             os.makedirs(os.path.dirname(self.dir_path))
+    def gg(self,index):
+        if index.text(0) == "Chrome":
+            self.setDisabled(True)
+            form = ChromeApp(self)
+            form.show()
 
     def analyze(self):
         root = self.treeWidget.invisibleRootItem()
@@ -45,7 +102,7 @@ class ExampleApp(QtGui.QMainWindow, design.Ui_MainWindow):
                     child_dict[name]['state'] = 2
                 else:
                     child_dict[name]['state'] = 0
-        MainEngine.MainEngine().do(child_dict,str(self.lineEdit.text()))
+        MainEngine.MainEngine().do(child_dict)
 
     def browse_file(self):
         file = str(QtGui.QFileDialog.getExistingDirectory())

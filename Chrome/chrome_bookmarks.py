@@ -26,7 +26,6 @@ def html_escape(text):
 def sanitize(string):
     res = ''
     string = html_escape(string)
-
     for i in range(len(string)):
         if ord(string[i]) > 127:
             res += '&#x{:x};'.format(ord(string[i]))

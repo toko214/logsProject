@@ -5,33 +5,34 @@ import MainEngine
 import os
 import PyQt4
 import chrome_ui
-import chrome_pass
 import chrome_history
 
 
 class ChromeHistoryApp(QtGui.QMainWindow, chrome_history.Ui_MainWindow):
-    def __init__(self, parent=None, items=None):
+    def __init__(self, parent=None, items=None, index=None):
         super(ChromeHistoryApp, self).__init__(parent)
         self.setupUi(self)
+        self.index = index
         for i in items:
             #j = QtGui.QTreeWidgetItem(self.treeWidget, [str(items[i]['url']), str(items[i]['visit_time']), str(items[i]['visit_duration']),len(items[i]['visit_time'])])
             j = QtGui.QTreeWidgetItem(self.treeWidget, [items[i]['url'],str(items[i]['visit_time']),str(items[i]['visit_duration']),str(len(items[i]['visit_time']))])
             self.treeWidget.addTopLevelItem(j)
 
     def closeEvent(self, event):
-        self.parent().setDisabled(False)
+        self.index.setDisabled(False)
         self.close()
 
-class ChromePassApp(QtGui.QMainWindow, chrome_pass.Ui_MainWindow):
-    def __init__(self, parent=None, items=None):
+class ChromePassApp(QtGui.QMainWindow, chrome_ui.pass_Ui):
+    def __init__(self, parent=None, items=None, index=None):
         super(ChromePassApp, self).__init__(parent)
         self.setupUi(self)
+        self.index = index
         for i in items:
             j = QtGui.QTreeWidgetItem(self.treeWidget, [i[0], i[1], i[2]])
             self.treeWidget.addTopLevelItem(j)
 
     def closeEvent(self, event):
-        self.parent().setDisabled(False)
+        self.index.setDisabled(False)
         self.close()
 
 class ChromeApp(QtGui.QMainWindow, chrome_ui.Ui_MainWindow):
@@ -42,15 +43,19 @@ class ChromeApp(QtGui.QMainWindow, chrome_ui.Ui_MainWindow):
 
     def tree_handle(self, index):
         if index.text(0) == "Chrome Passowrds":
-            self.setDisabled(True)
+            index.setDisabled(True)
             passwords = MainEngine.ce.ChromeEngine().get_chrome_saved_password()
-            form = ChromePassApp(self, items=passwords)
+            form = ChromePassApp(self, items=passwords,index=index)
             form.show()
         if index.text(0) == "Chrome History":
-            self.setDisabled(True)
+            index.setDisabled(True)
             history = MainEngine.ce.ChromeEngine().get_chrome_history()
-            form = ChromeHistoryApp(self, items=history)
+            form = ChromeHistoryApp(self, items=history,index=index)
             form.show()
+        if index.text(0) == "Chrome Cookies":
+            pass
+
+
     def closeEvent(self, event):
         self.parent().setDisabled(False)
         self.close()

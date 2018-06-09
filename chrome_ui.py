@@ -181,4 +181,45 @@ class history_ui(object):
         self.treeWidget.headerItem().setText(2, _translate("MainWindow", "Visit Duration", None))
         self.treeWidget.headerItem().setText(3, _translate("MainWindow", "Times Visited", None))
 
+class cookies_ui(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName(_fromUtf8("MainWindow"))
+        MainWindow.resize(872, 598)
+        self.centralwidget = QtGui.QWidget(MainWindow)
+        self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        self.horizontalLayout = QtGui.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.treeWidget = QtGui.QTreeWidget(self.centralwidget)
+        self.treeWidget.setAutoScroll(True)
+        self.treeWidget.setProperty("showDropIndicator", True)
+        self.treeWidget.setIndentation(0)
+        self.treeWidget.setItemsExpandable(True)
+        self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
+        self.treeWidget.header().setDefaultSectionSize(150)
+        self.treeWidget.header().setMinimumSectionSize(150)
+        self.treeWidget.header().setSortIndicatorShown(True)
+        self.treeWidget.header().setStretchLastSection(False)
+        self.horizontalLayout.addWidget(self.treeWidget)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtGui.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 872, 21))
+        self.menubar.setObjectName(_fromUtf8("menubar"))
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtGui.QStatusBar(MainWindow)
+        self.statusbar.setObjectName(_fromUtf8("statusbar"))
+        MainWindow.setStatusBar(self.statusbar)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(_translate("MainWindow", "Chrome Cookies", None))
+        self.treeWidget.setSortingEnabled(True)
+        self.treeWidget.headerItem().setText(0, _translate("MainWindow", "Website", None))
+        self.treeWidget.headerItem().setText(1, _translate("MainWindow", "Name", None))
+        self.treeWidget.headerItem().setText(2, _translate("MainWindow", "Value", None))
+        self.treeWidget.headerItem().setText(3, _translate("MainWindow", "Expire", None))
+        self.treeWidget.headerItem().setText(4, _translate("MainWindow", "Time Created", None))
+
+
 

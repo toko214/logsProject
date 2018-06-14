@@ -6,90 +6,101 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
-    <height>297</height>
+    <width>702</width>
+    <height>433</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Chrome</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTreeWidget" name="treeWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>561</width>
-      <height>251</height>
-     </rect>
-    </property>
-    <property name="indentation">
-     <number>0</number>
-    </property>
-    <attribute name="headerVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="headerShowSortIndicator" stdset="0">
-     <bool>true</bool>
-    </attribute>
-    <column>
-     <property name="text">
-      <string/>
-     </property>
-    </column>
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <property name="text">
-      <string>Chrome Passowrds</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>icons/key.png</normaloff>icons/key.png</iconset>
-     </property>
+     <widget class="QTreeWidget" name="treeWidget">
+      <property name="selectionMode">
+       <enum>QAbstractItemView::ContiguousSelection</enum>
+      </property>
+      <property name="indentation">
+       <number>0</number>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="headerVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="headerDefaultSectionSize">
+       <number>200</number>
+      </attribute>
+      <attribute name="headerMinimumSectionSize">
+       <number>200</number>
+      </attribute>
+      <attribute name="headerShowSortIndicator" stdset="0">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="headerStretchLastSection">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Programs</string>
+       </property>
+      </column>
+      <item>
+       <property name="text">
+        <string>Chrome Passwords</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/key.png</normaloff>icons/key.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chrome History</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/history.png</normaloff>icons/history.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chrome Cookies</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/cookie.png</normaloff>icons/cookie.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chrome Cache</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/accounting.png</normaloff>icons/accounting.png</iconset>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chrome Bookmarks</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>icons/notebook.png</normaloff>icons/notebook.png</iconset>
+       </property>
+      </item>
+     </widget>
     </item>
-    <item>
-     <property name="text">
-      <string>Chrome Bookmarks</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>icons/notebook.png</normaloff>icons/notebook.png</iconset>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Chrome History</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>icons/history.png</normaloff>icons/history.png</iconset>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Chrome Cookies</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>icons/cookie.png</normaloff>icons/cookie.png</iconset>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Chrome Cache</string>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>icons/accounting.png</normaloff>icons/accounting.png</iconset>
-     </property>
-    </item>
-   </widget>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>569</width>
+     <width>702</width>
      <height>21</height>
     </rect>
    </property>

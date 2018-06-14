@@ -29,6 +29,8 @@ def get_chrome_saved_password():
                 list_of_passwords.append((result[0], result[1], ""))
             if password:
                 list_of_passwords.append((result[0], result[1], password))
+            else:
+                list_of_passwords.append((result[0], result[1], ""))
         return list_of_passwords
     else:
         return ['err', 1, select_statement1]

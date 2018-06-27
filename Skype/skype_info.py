@@ -11,25 +11,18 @@ import usefull_things as ut
 from lxml import html
 
 folder_list = ['Content', 'DataRv', 'logs', 'My Skype Received Files', 'RootTools', 'shared_httpfe', 'SkypeRT']
-folder_list2 = ['coexistence', 'DataRv', 'DiagOutputDir', 'logs', 'SkypeRT','Tracing','Avatar']
+folder_list2 = ['coexistence', 'DataRv', 'DiagOutputDir', 'logs', 'SkypeRT', 'Tracing','Avatar']
 PATH = []
 
 MESSAGE_REMOVED_TEXT = "This message has been removed."
-MESSAGES_TYPE_TOPIC = 2# Changed chat topic or picture
-MESSAGES_TYPE_GROUP        =   4 # Created group conversation
-MESSAGES_TYPE_PARTICIPANTS =  10 # Added participants to chat
-MESSAGES_TYPE_REMOVE       =  12 # Removed participants from chat
-MESSAGES_TYPE_LEAVE        =  13 # Contact left the chat
-MESSAGES_TYPE_CALL         =  30 # Started Skype call
-MESSAGES_TYPE_CALL_END     =  39 # Skype call ended
-MESSAGES_TYPE_SHARE_DETAIL =  51 # Sharing contact details
-MESSAGES_TYPE_MESSAGE      =  61 # Ordinary message
-MESSAGES_TYPE_CONTACTS     =  63 # Sent contacts
-MESSAGES_TYPE_SMS          =  64 # SMS message
-MESSAGES_TYPE_FILE         =  68 # File transfer
-MESSAGES_TYPE_BIRTHDAY     = 110 # Birthday notification
-TRANSFER_TYPE_OUTBOUND     =   1 # An outbound transfer, sent by this account
-TRANSFER_TYPE_INBOUND      =   2 # An inbound transfer, sent to this account
+MESSAGES_TYPE_TOPIC = 2  # Changed chat topic or picture
+MESSAGES_TYPE_PARTICIPANTS =  10   # Added participants to chat
+MESSAGES_TYPE_REMOVE       =  12   # Removed participants from chat
+MESSAGES_TYPE_LEAVE        =  13   # Contact left the chat
+MESSAGES_TYPE_CALL         =  30   # Started Skype call
+MESSAGES_TYPE_CALL_END     =  39   # Skype call ended
+MESSAGES_TYPE_MESSAGE      =  61   # Ordinary message
+
 
 def path_1(appdata_path):
     """
@@ -38,7 +31,7 @@ def path_1(appdata_path):
     :return: setting a path var
     :return: error  number
     """
-    data_path = appdata_path+"\Roaming\Skype"
+    data_path = appdata_path + "\Roaming\Skype"
     if os.path.exists(data_path):
         folders = next(os.walk(data_path))[1]
         for i in folder_list:
@@ -48,7 +41,8 @@ def path_1(appdata_path):
             return
         for i in folders:
             sqlite3_path = data_path + "\\" + i + "\main.db"
-            PATH.append([1,sqlite3_path])
+            PATH.append([1, sqlite3_path])
+
 
 def path_2(appdata_path):
     """
@@ -57,16 +51,16 @@ def path_2(appdata_path):
     :return: setting a path var
     :return: error number
     """
-    data_path = appdata_path+"\Local\Packages\\"
+    data_path = appdata_path + "\Local\Packages\\"
     folder_list = next(os.walk(data_path))[1]
     skype_folder = ""
     for folder in folder_list:
         if "Microsoft.SkypeApp_" in folder:
             skype_folder = folder
             break
-    if skype_folder=="":
+    if skype_folder == "":
         return
-    skype_folder = data_path +skype_folder+"\LocalState\\"
+    skype_folder = data_path + skype_folder + "\LocalState\\"
     folders = next(os.walk(skype_folder))[1]
     for i in folder_list2:
         if i in folders:
@@ -77,6 +71,7 @@ def path_2(appdata_path):
         sqlite3_path = skype_folder + i + "\skype.db"
         PATH.append([2,sqlite3_path])
 
+
 def set_path():
     """
     calling functions that will search in the computer for skype program
@@ -85,6 +80,7 @@ def set_path():
     appdata_path =  os.path.expanduser('~') + "\AppData"
     path_1(appdata_path)
     path_2(appdata_path)
+
 
 def get_accounts(path):
     """
@@ -98,7 +94,7 @@ def get_accounts(path):
     cursor = ut.connect_to_sqlite3_db(path[1])
     if path[0] == 1:
         try:
-            results = ut.execute_sql(cursor,select_statement)
+            results = ut.execute_sql(cursor, select_statement)
             if len(results) > 0:
                 inner_dict = {}
                 inner_dict['username'] = str(results[0][1])
@@ -114,12 +110,12 @@ def get_accounts(path):
                 inner_dict['email'] = str(results[0][8])
                 inner_dict['mood'] = str(results[0][9])
                 return [inner_dict]
-            return ['err',1,select_statement]
+            return ['err', 1, select_statement]
         except Exception as ex:
-            return ['err',13,path[1],ex]
+            return ['err', 13, path[1],ex]
     if path[0] == 2:
         try:
-            results = ut.execute_sql(cursor,select_statement2)
+            results = ut.execute_sql(cursor, select_statement2)
             if len(results) > 0:
                 inner_dict = {}
                 inner_dict['username'] = results[1][1]
@@ -127,9 +123,10 @@ def get_accounts(path):
                 inner_dict['mood'] = results[5]
                 inner_dict['avatar_url'] = results[6]
                 return [inner_dict]
-            return ['err',1,select_statement2]
+            return ['err', 1, select_statement2]
         except Exception as ex:
-            return ['err',13,path[1],ex]
+            return ['err', 13, path[1] ,ex]
+
 
 def get_contacts(path):
     """
@@ -144,7 +141,7 @@ def get_contacts(path):
     cursor = ut.connect_to_sqlite3_db(path[1])
     if path[0] == 1:
         try:
-            results = ut.execute_sql(cursor,select_statement)
+            results = ut.execute_sql(cursor, select_statement)
             if len(results) > 0:
                 for contact in results:
                     inner_dict = {}
@@ -160,19 +157,19 @@ def get_contacts(path):
                     inner_dict['gender'] = gender
                     inner_dict['country'] = contact[4]
                     inner_dict['city'] = contact[5]
-                    inner_dict['phones'] = [contact[6],contact[7], contact[8]]
+                    inner_dict['phones'] = [contact[6], contact[7], contact[8]]
                     inner_dict['email'] = contact[9]
-                    inner_dict['realeted_urls'] = [contact[10],contact[11],contact[12]]
+                    inner_dict['realeted_urls'] = [contact[10], contact[11], contact[12]]
                     inner_dict['avatar_profile'] = contact[13]
                     Contacts[contact[0]] = inner_dict
                 return [Contacts]
-            return ['err',1,select_statement]
+            return ['err', 1, select_statement]
         except Exception as ex:
-            return ['err',13,path[1],ex]
+            return ['err', 13, path[1], ex]
 
     if path[0] == 2:
         try:
-            results = ut.execute_sql(cursor,select_statement2)
+            results = ut.execute_sql(cursor, select_statement2)
             if len(results) > 0:
                 for contact in results:
                     if contact[16] == 8:
@@ -180,7 +177,6 @@ def get_contacts(path):
                         skype_name = contact[0]
                         indx = skype_name.find(':')
                         skype_name = skype_name[indx+1:]
-                        #inner_dict['username'] = skype_name
                         inner_dict['fullname'] = contact[1]
                         if contact[2] != None:
                             inner_dict['birthday'] = str(contact[2])[:4] + "/" + str(contact[2])[4:6] +"/" +str(contact[2])[6:]
@@ -192,25 +188,24 @@ def get_contacts(path):
                         inner_dict['gender'] = gender
                         inner_dict['country'] = contact[4]
                         inner_dict['city'] = contact[5]
-                        inner_dict['phones'] = [contact[6],contact[7], contact[8],contact[9],contact[10],contact[11]]
-                        inner_dict['realeted_urls'] = [contact[12],contact[13]]
-                        inner_dict['avatar_profile'] = [contact[14],contact[15]]
+                        inner_dict['phones'] = [contact[6], contact[7], contact[8], contact[9], contact[10], contact[11]]
+                        inner_dict['realeted_urls'] = [contact[12], contact[13]]
+                        inner_dict['avatar_profile'] = [contact[14], contact[15]]
                         Contacts[skype_name] = inner_dict
                 return [Contacts]
-            return ['err',1,select_statement2]
+            return ['err', 1 ,select_statement2]
         except Exception as ex:
-            return ['err',13,path[1],ex]
+            return ['err', 13, path[1], ex]
+
 
 def get_messages(path):
-    #convo type = 19
-    #private message = 8
     """
     searching in the skype database for messages that the user got or sent .
     :param path: the path of the skype database file
     :return1: errornumber
     :return2: skype user information
     """
-    select_statement1 = "SELECT convo_id , chatname, author, datetime(timestamp + 10800, 'unixepoch') as date,body_xml, type, identities FROM Messages order by convo_id"
+    select_statement1 = "SELECT convo_id , chatname, author, datetime(timestamp + 10800, 'unixepoch') as date,body_xml, type, identities, edited_by FROM Messages order by convo_id"
     select_statement2 = "SELECT convo_id,identity FROM Participants order by convo_id"
     select_statement3 = "SELECT convdbid,originalarrivaltime ,editedtime ,content,author, messagetype FROM messages order by convdbid"
     select_statement4 = "SELECT dbid,type,id,thread_admins FROM conversations order by dbid "
@@ -218,26 +213,27 @@ def get_messages(path):
     MESSAGES = {}
     if path[0] == 1:
         try:
-            results = ut.execute_sql(cursor,select_statement1)
-            results2 = ut.execute_sql(cursor,select_statement2)
+            results = ut.execute_sql(cursor, select_statement1)
+            results2 = ut.execute_sql(cursor, select_statement2)
             if len(results) > 0:
                 for message in results:
                     if not message[0] in MESSAGES:
                         inner_dict = {}
                         inner_dict['group'] = "No"
-                        inner_dict['participatins'] = " "
+                        inner_dict['participatins'] = ""
                         m_from = message[2]
                         to_remove = []
                         temp = None
                         count = 0
                         for parti in results2:
-                            if parti[0] == message[0] and parti[1]!=m_from:
-                                count += 1
-                                inner_dict['participatins'] += parti[1] + ", "
-                                to_remove.append(parti)
-                                temp=parti[1]
+                            if parti[0] == message[0]:
+                                if parti[1] != m_from:
+                                    count += 1
+                                    inner_dict['participatins'] += parti[1] + ", "
+                                    to_remove.append(parti)
+                                    temp=parti[1]
                             else:
-                                if temp!=None:
+                                if temp != None:
                                     break
                         if count > 1:
                             inner_dict['group'] = "Yes"
@@ -257,7 +253,12 @@ def get_messages(path):
                             msg = m_from + " Added " + message[6]
                         elif message[5] == MESSAGES_TYPE_REMOVE:
                             msg = m_from + " Removed " + message[6]
-                        inner_dict['messages'] = [{'time':message[3],'message':msg,'from':m_from}]
+                        elif message[5] == MESSAGES_TYPE_LEAVE:
+                            msg = message[6] + " Left From The Call"
+                        # elif message[5] == MESSAGES_TYPE_TOPIC:
+                        #     print message[7]
+                        #     msg = message[7] + " Changed The Topic To" + str(msg)
+                        inner_dict['messages'] = [{'time': message[3], 'message':msg, 'from':m_from}]
                         MESSAGES[message[0]] = inner_dict
                     else:
                         m_from = message[2]
@@ -276,15 +277,20 @@ def get_messages(path):
                             msg = m_from + " Added " + message[6]
                         elif message[5] == MESSAGES_TYPE_REMOVE:
                             msg = m_from + " Removed " + message[6]
-                        MESSAGES[message[0]]['messages'].append({'time':message[3],'message':msg,'from':message[2]})
+                        elif message[5] == MESSAGES_TYPE_LEAVE:
+                            msg = message[6] + " Left From The Call"
+                        # elif message[5] == MESSAGES_TYPE_TOPIC:
+                        #     print message[7]
+                        #     msg = message[7] + " Changed The Topic To" + str(msg)
+                        MESSAGES[message[0]]['messages'].append({'time': message[3], 'message': msg, 'from':message[2]})
                 return [MESSAGES]
-            return ['err',1, select_statement1]
+            return ['err', 1, select_statement1]
         except Exception as ex:
-            return ['err',13, path[1],ex]
+            return ['err', 13, path[1], ex]
     if path[0] == 2:
         try:
-            results = ut.execute_sql(cursor,select_statement3)
-            results2 = ut.execute_sql(cursor,select_statement4)
+            results = ut.execute_sql(cursor, select_statement3)
+            results2 = ut.execute_sql(cursor, select_statement4)
             if len(results) > 0:
                 for message in results:
                     if not message[0] in MESSAGES:
@@ -295,13 +301,13 @@ def get_messages(path):
                             if parti[0] == message[0]:
                                 if parti[1] == '8':
                                     inner_dict['group'] = "No"
-                                    inner_dict['participatins'] = [m_from,parti[3]]
+                                    inner_dict['participatins'] = [m_from, parti[3]]
                                     results2.remove(parti)
                                     break
                                 if parti[1] == '19':
                                     inner_dict['group'] = "Yes"
                                     if parti[3]:
-                                        partis = parti[3].replace('8:','').split(' ')
+                                        partis = parti[3].replace('8:', '').split(' ')
                                     else:
                                         partis = ""
                                     inner_dict['participatins'] = partis
@@ -311,7 +317,7 @@ def get_messages(path):
                         if message[5] == 10:
                             msg = "Call Ended/Started"
                         inner_dict['group'] = "Yes"
-                        inner_dict['messages'] = [{'edit_time':message[2],'time':message[1],'message':msg,'from':m_from}]
+                        inner_dict['messages'] = [{'edit_time': message[2], 'time':message[1], 'message':msg, 'from': m_from}]
                         MESSAGES[message[0]] = inner_dict
                     else:
                         msg = message[3]
@@ -319,11 +325,12 @@ def get_messages(path):
                             msg = "Call Ended/Started"
                         indx = message[4].find(":")
                         m_from = message[4][indx+1:]
-                        MESSAGES[message[0]]['messages'].append({'edit_time':message[2],'time':message[1],'message':msg,'from':m_from})
+                        MESSAGES[message[0]]['messages'].append({'edit_time': message[2], 'time': message[1], 'message': msg, 'from': m_from})
                 return [MESSAGES]
-            return ['err',1,select_statement1]
+            return ['err', 1, select_statement1]
         except Exception as ex:
             print ex
-            return ['err',13, path[1],ex]
-set_path()
+            return ['err', 13, path[1], ex]
 
+
+set_path()

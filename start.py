@@ -2,21 +2,16 @@
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
-import os
-import threading
 
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtCore
 import xlwt
 
-import design
-import general_ui
-import find
-import help
+from uis import general_ui, find, help, design
 from Chrome import ChromeEngine as ce
-from Skype import  SkypeEngine as se
+from Skype import SkypeEngine as se
 from Firefox import FireFoxEngine as ff
 from Programs_installed import programs_installed as pi
-import usefull_things as ut
+from usefull_things import *
 
 ch = ce.ChromeEngine()
 fff = ff.FireFoxEngine()
@@ -55,7 +50,7 @@ class FindApp(QtGui.QMainWindow, find.Ui_MainWindow):
         self.no_items_found = False
         self.checkBox_2.setChecked(True)
 
-        self.lab.setText("You can always use help window to know more on the program.")
+        self.lab.setText(HELP_STR)
 
     def change_box1(self):
         if self.current_state:
@@ -95,7 +90,7 @@ class FindApp(QtGui.QMainWindow, find.Ui_MainWindow):
                 if items:
                     self.items.append([i, items])
             if not self.items:
-                ut.message_box(self=self, title="No Items Found", txt="No Items Found With this keyword")
+                message_box(self=self, title=NO_ITEMS_FOUND_TITLE, txt=NO_ITEMS_FOUND_TXT)
                 self.no_items_found = True
             else:
                 self.progress()
@@ -104,9 +99,9 @@ class FindApp(QtGui.QMainWindow, find.Ui_MainWindow):
                 if self.items:
                     self.progress()
                 else:
-                    ut.message_box(self=self, title="No More Items", txt="No More Items Found")
+                    message_box(self=self, title=NO_MORE_ITEMS_TITLE, txt=NO_MORE_ITEMS_TXT)
             else:
-                ut.message_box(self=self, title="No Items Found", txt="No Items Found With this keyword")
+                message_box(self=self, title=NO_MORE_ITEMS_TITLE, txt=NO_MORE_ITEMS_TXT)
 
     def progress(self):
         for j in self.items:
@@ -130,17 +125,17 @@ class GeneralSubApp(QtGui.QMainWindow, general_ui.general_ui):
         self.setupUi(self, items, name)
         self.header_count = len(items)
         self.items_count = len(tree_items)
-        self.lab.setText("Items Count: " + str(self.items_count) + " | You can always use help window to know more on the program.")
+        self.lab.setText(ITEMS_COUNT_STR + str(self.items_count) + " | " + HELP_STR)
         self.index = index
         self.actionExit.triggered.connect(self.close)
         self.actionSave_Selected_Items.triggered.connect(self.tree_to_xl)
-        self.actionSave_Selected_Items.setShortcut(QtGui.QKeySequence('Ctrl+S'))
+        self.actionSave_Selected_Items.setShortcut(QtGui.QKeySequence(SHOURCUT_CTRL_S))
         self.actionFind.triggered.connect(self.open_find_ui)
-        self.actionFind.setShortcut(QtGui.QKeySequence('Ctrl+F'))
+        self.actionFind.setShortcut(QtGui.QKeySequence(SHOURCUT_CTRL_F))
         self.actionSelect_All.triggered.connect(self.treeWidget.selectAll)
-        self.actionSelect_All.setShortcut(QtGui.QKeySequence('Ctrl+A'))
+        self.actionSelect_All.setShortcut(QtGui.QKeySequence(SHOURCUT_CTRL_A))
         self.actionDeselect_All.triggered.connect(self.treeWidget.clearSelection)
-        self.actionDeselect_All.setShortcut(QtGui.QKeySequence('Ctrl+D'))
+        self.actionDeselect_All.setShortcut(QtGui.QKeySequence(SHOURCUT_CTRL_D))
         self.actionTurorial.triggered.connect(self.open_help_ui)
         self.children_windows = []
 
@@ -184,33 +179,27 @@ class GeneralSubApp(QtGui.QMainWindow, general_ui.general_ui):
             x = 0
             for item in items:
                 for col_num in range(self.header_count):
-                    ws.write(x + 1, col_num, item.text(col_num),
+                    ws.write(x + 1, col_num, str(item.text(col_num)),
                              font_style)
                 x += 1
         wb.save("asd.xls")
 
 
 class GeneralApp(QtGui.QMainWindow, general_ui.general_apps_ui):
-    def __init__(self,parent=None, index=None, tree_items=None, name=None):
+    def __init__(self, parent=None, index=None, tree_items=None, name=None):
         super(GeneralApp, self).__init__(parent)
         self.setupUi(self, tree_items, name)
         self.treeWidget.itemDoubleClicked.connect(self.tree_handle)
         self.actionExit.triggered.connect(self.close)
         self.index = index
         self.children_windows = []
-        self.actionSave_Selected_Items.triggered.connect(self.tree_to_xl)
-        self.actionSave_Selected_Items.setShortcut(QtGui.QKeySequence('Ctrl+S'))
         self.actionTurorial.triggered.connect(self.open_help_ui)
-        self.lab.setText("You can always use help window to know more on the program.")
+        self.lab.setText(HELP_STR)
 
     def open_help_ui(self):
         form = HelpApp(self, text=2)
         self.children_windows.append(form)
         form.show()
-
-    def tree_to_xl(self):
-        for item in self.treeWidget.selectedItems():
-            name = item.text(0).split(" ")
 
     def tree_handle(self, index):
         if not index.isDisabled():
@@ -218,54 +207,55 @@ class GeneralApp(QtGui.QMainWindow, general_ui.general_apps_ui):
             name = index.text(0).split(" ")
             items = []
             tree_items = []
-            if name[0] == "Chrome":
-                if name[1] == "Password":
+            if name[0] == CHROME_STR:
+                if name[1] == PASSWORD_STR:
                     passwords = ch.get_chrome_saved_password()
                     for i in passwords:
                         tree_items.append([i[0], i[1], i[2]])
-                    items.extend([[0, "Website"], [1, "Username"], [2, "Password"]])
-                elif name[1] == "History":
+                    items.extend([[0, WEBSITE_STR], [1, USERNAME_STR], [2, PASSWORD_STR]])
+                elif name[1] == HISTORY_STR:
                     history = ch.get_chrome_history()
                     for i in history[0]:
-                        tree_items.append([history[0][i]['url'], str(history[0][i]['visit_time']),str(history[0][i]['visit_duration']), str(len(history[0][i]['visit_time']))])
+                        for j in range(len(history[0][i]['visit_time'])):
+                            tree_items.append([history[0][i][URL_STR], history[0][i]['visit_time'][j], history[0][i]['visit_duration'][j], str(len(history[0][i]['visit_time']))])
                     for i in history[1]:
-                        tree_items.append(["Keyword: " + i , str(history[1][i]['visit_time']), str(history[1][i]['visit_duration']), str(len(history[1][i]['visit_time']))])
-
-                    items.extend([[0, "Url"], [1, "Visit Time"], [2, "Visit Duration"], [3, "Times Visited"]])
-                else: #name[1] == "Cookies":
+                        if history[1][i] != "":
+                            for j in range(len(history[1][i]['visit_time'])):
+                                tree_items.append(["Keyword: " + i, history[1][i]['visit_time'][j], history[1][i]['visit_duration'][j], str(len(history[1][i]['visit_time']))])
+                        else:
+                            tree_items.append(["Keyword: "+ i.encode('utf-8').decode('utf-8'), "", "", "1"])
+                    items.extend([[0, URL_STR2], [1, "Visit Time"], [2, "Visit Duration"], [3, "Times Visited"]])
+                else:
                     cookies = ch.get_cookies()
                     for i in cookies:
                         for k in cookies[i]:
                             tree_items.append([i, k['name'], k['value'], k['expire'], k['time_created']])
-                    items.extend([[0, "Url"], [1, "Name"], [2, "Value"], [3, "Expire"], [4, "Time Created"]])
-
-            elif name[0] == "Firefox":
-                if name[1] == "Password":
+                    items.extend([[0, URL_STR2], [1, "Name"], [2, "Value"], [3, "Expire"], [4, "Time Created"]])
+            elif name[0] == FIREFOX_STR:
+                if name[1] == PASSWORD_STR:
                     passwords = fff.get_saved_password()
                     for i in passwords:
                         tree_items.append([i[0], i[1], i[2]])
-                    items.extend([[0, "Website"], [1, "Username"], [2, "Password"]])
-
-                elif name[1] == "History":
+                    items.extend([[0, WEBSITE_STR], [1, USERNAME_STR], [2, PASSWORD_STR]])
+                elif name[1] == HISTORY_STR:
                     history = fff.get_history()
                     for i in history:
-                        tree_items.append([history[i]["url"], str(history[i]["visit_dates"]), str(len(history[i]["visit_dates"]))])
-                    items.extend([[0, "Url"], [1, "Visit Time"], [2, "Times Visited"]])
-
-                elif name[1] == "Bookmarks":
+                        tree_items.append([history[i][URL_STR], str(history[i]["visit_dates"]), str(len(history[i]["visit_dates"]))])
+                    items.extend([[0, URL_STR2], [1, "Visit Time"], [2, "Times Visited"]])
+                elif name[1] == BOOKMARKS_STR:
                     bookmarks = fff.get_bookmarks()
                     for i in bookmarks:
-                        tree_items.append([bookmarks[i]["url"], bookmarks[i]['date_added'], bookmarks[i]["date_modified"]])
-                    items.extend([[0, "Url"], [1, "Date Added"], [2, "Date Modified"]])
+                        tree_items.append([bookmarks[i][URL_STR], bookmarks[i]['date_added'], bookmarks[i]["date_modified"]])
+                    items.extend([[0, URL_STR2], [1, "Date Added"], [2, "Date Modified"]])
 
                 else:
                     cookies = fff.get_cookies()
                     for i in cookies:
                         for j in cookies[i]:
                             tree_items.append([i, j['name'], j['value'], j['creationTime'], j['expiry']])
-                    items.extend([[0, "Website"], [1, "Name"], [2, "Value"], [3, "Time Created"], [4, "Expire Date"]])
+                    items.extend([[0, WEBSITE_STR], [1, "Name"], [2, "Value"], [3, "Time Created"], [4, "Expire Date"]])
 
-            elif name[0] == "Skype":
+            elif name[0] == SKYPE_STR:
                 if name[1] == "Contacts":
                     contacts = sky.get_contacts()
                     for i in contacts:
@@ -288,8 +278,8 @@ class GeneralApp(QtGui.QMainWindow, general_ui.general_apps_ui):
                             email = ""
                             if 'email' in i[j]:
                                 email = str(i[j]['email'])
-                            tree_items.append([str(j), fullname, i[j]['birthday'], i[j]['gender'], country, city, str(i[j]['phones']),str(email), str(i[j]['realeted_urls']), str(i[j]['avatar_profile'])])
-                    items.extend([[0, "Username"], [1, "Full Name"], [2, "Birthday"], [3, "Gender"], [4, "Country"], [5, "City"], [6, "Phone Numbers"], [7, "Email"], [8, "Realeted Urls"], [9, "Avatar Profile"]])
+                            tree_items.append([str(j), fullname, i[j]['birthday'], i[j]['gender'], country, city, str(i[j]['phones']), str(email), str(i[j]['realeted_urls']), str(i[j]['avatar_profile'])])
+                    items.extend([[0, USERNAME_STR], [1, "Full Name"], [2, "Birthday"], [3, "Gender"], [4, "Country"], [5, "City"], [6, "Phone Numbers"], [7, "Email"], [8, "Realeted Urls"], [9, "Avatar Profile"]])
                 elif name[1] == 'Messages':
                     messages = sky.get_messages()
                     for i in messages:
@@ -328,7 +318,7 @@ class GeneralApp(QtGui.QMainWindow, general_ui.general_apps_ui):
                             email = i['email']
                         tree_items.append([i['username'], i['fullname'], str(i['mood']), str(birthday), gender, str(language), str(country), str(city), str(email)])
                     items.extend([[0, "Username"], [1, 'Full Name'], [2, 'Mood'], [3, 'Birthday'], [4, "Gender"], [5, "Language"], [6, "Country"], [7, "City"], [8, "Email"]])
-            elif name[0] == "Programs":
+            elif name[0] == PROGRAMS_STR:
                 progs = pi.get_programs_installed()
                 for i in progs:
                     tree_items.append([str(i)])
@@ -354,7 +344,7 @@ class MainApp(QtGui.QMainWindow, design.Ui_MainWindow):
         self.actionExit.triggered.connect(self.close)
         self.treeWidget_2.itemDoubleClicked.connect(self.check_index)
         self.actionTutorial.triggered.connect(self.open_help_ui)
-        self.lab.setText("You can always use help window to know more on the program.")
+        self.lab.setText(HELP_STR)
 
         if not os.path.exists(os.path.dirname(self.dir_path)):
             os.makedirs(os.path.dirname(self.dir_path))
@@ -363,32 +353,34 @@ class MainApp(QtGui.QMainWindow, design.Ui_MainWindow):
         form = HelpApp(self, text=1)
         form.show()
 
-    def check_index(self,index):
+    def check_index(self, index):
         if not index.isDisabled():
             name = index.text(0)
-            if name == "Chrome":
+            if name == CHROME_STR:
                 if ch.is_valid:
                     index.setDisabled(True)
-                    tree_items = [[0, "Password"], [1, "Cache"], [2, "Bookmarks"], [3, "History"], [4, "Cookies"]]
+                    tree_items = [[0, PASSWORD_STR], [1, "Cache"], [2, BOOKMARKS_STR], [3, HISTORY_STR], [4, COOKIES_STR]]
                     form = GeneralApp(self, index=index, tree_items=tree_items, name=name)
                     form.show()
                 else:
-                    ut.message_box(self=self, title=name + ut.title_not_installed, txt=name + ut.txt_not_installed)
-            elif name == "Firefox":
+                    message_box(self=self, title=name + TITLE_NOT_INSTALLED, txt=name + TXT_NOT_INSTALLED)
+            elif name == FIREFOX_STR:
                 if fff.is_valid:
                     index.setDisabled(True)
-                    tree_items = [[0, "Password"], [1, "Bookmarks"], [2, "History"], [3, "Cookies"]]
+                    tree_items = [[0, PASSWORD_STR], [1, BOOKMARKS_STR], [2, HISTORY_STR], [3, COOKIES_STR]]
                     form = GeneralApp(self, index=index, tree_items=tree_items, name=name)
                     form.show()
                 else:
-                    ut.message_box(self=self, title=name + ut.title_not_installed, txt=name + ut.txt_not_installed)
-            elif name == "Skype":
+                    message_box(self=self, title=name + TITLE_NOT_INSTALLED, txt=name + TXT_NOT_INSTALLED)
+            elif name == SKYPE_STR:
                 if sky.is_valid:
                     index.setDisabled(True)
                     tree_items = [[0, "Contacts"], [1, "Messages"], [2, "Accounts"]]
                     form = GeneralApp(self, index=index, tree_items=tree_items, name=name)
                     form.show()
-            elif name == "Programs":
+                else:
+                    message_box(self=self, title=name + TITLE_NOT_INSTALLED, txt=name + TXT_NOT_INSTALLED)
+            elif name == PROGRAMS_STR:
                 index.setDisabled(True)
                 tree_items = [[0, "Installed on pc"]]
                 form = GeneralApp(self, index=index, tree_items=tree_items, name=name)
@@ -400,6 +392,7 @@ class MainApp(QtGui.QMainWindow, design.Ui_MainWindow):
         file = str(QtGui.QFileDialog.getExistingDirectory())
         self.lineEdit.setText(file)
         QtGui.QTreeWidgetItem.checkState()
+
 
 def main():
     app = QtGui.QApplication(sys.argv)

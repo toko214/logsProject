@@ -4,8 +4,30 @@ import datetime
 from urlparse import urlparse
 from PyQt4 import QtGui
 
-title_not_installed = " Not Installed"
-txt_not_installed = " Is Not Installed Or His Files Is Corrupted"
+TITLE_NOT_INSTALLED = " Not Installed"
+TXT_NOT_INSTALLED = " Is Not Installed Or His Files Is Corrupted"
+CHROME_STR = "Chrome"
+FIREFOX_STR = "Firefox"
+SKYPE_STR = "Skype"
+PROGRAMS_STR = "Programs"
+PASSWORD_STR = "Password"
+BOOKMARKS_STR = "Bookmarks"
+HISTORY_STR = "History"
+COOKIES_STR = "Cookies"
+HELP_STR = "You can always use help window to know more on the program. | Its may take some time...."
+NO_ITEMS_FOUND_TITLE = "No Items Found"
+NO_ITEMS_FOUND_TXT = "No Items Found With this keyword"
+NO_MORE_ITEMS_TITLE = "No More Items"
+NO_MORE_ITEMS_TXT = "No More Items Found"
+ITEMS_COUNT_STR = "Items Count: "
+SHOURCUT_CTRL_A = 'Ctrl+A'
+SHOURCUT_CTRL_S = 'Ctrl+S'
+SHOURCUT_CTRL_F = 'Ctrl+F'
+SHOURCUT_CTRL_D = 'Ctrl+D'
+USERNAME_STR = "Username"
+WEBSITE_STR = "Website"
+URL_STR = "url"
+URL_STR2 = "Url"
 
 
 def connect_to_sqlite3_db(sqlite3_path):

@@ -248,8 +248,11 @@ def getKey(directory,master_passowrd):
     return key[:24]
 
 
-def get_saved_password():
-    firefox_path = os.path.expanduser('~') + "\AppData\Roaming\Mozilla\Firefox\Profiles\\"
+def get_saved_password(firefox_path):
+    """
+    all the fucntions is external library that i found
+    :return: list of password
+    """
     profiles = [i for i in os.listdir(firefox_path) if i.endswith('.default')]
     password_list = []
     for j in profiles:

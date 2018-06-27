@@ -1,38 +1,27 @@
-import StringIO
-import traceback
-import wmi
-from _winreg import (HKEY_LOCAL_MACHINE, KEY_ALL_ACCESS, 
-                     OpenKey, QueryValueEx,KEY_SET_VALUE)
+"""
+Author: Tomer Perets
+Date: 27.6.2018
+this file contains a function that help receiving all the programs installed on this pc.
+"""
 
-errorLog = open('errors.log', 'w')
+import wmi
+from _winreg import HKEY_LOCAL_MACHINE
+
 
 def get_programs_installed():
     """
-    pasdasdasd
-    :return:
+    searching in the registry for the programs installed on this pc.
+    its possible its wont find all the programs cause sometime the programs not installed/uninstalled properly.
+    :return: list of programs installed on the pc
     """
-    key_paths = [r"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall", r"Software\Microsoft\Windows\CurrentVersion\Uninstall" ]
+    key_path = r"Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
     programs = []
-
     r = wmi.Registry()
     result, names = r.EnumKey(hDefKey=HKEY_LOCAL_MACHINE,
-                              sSubKeyName=key_paths[1])
-    for i in key_paths:
-        for subkey in names:
-            try:
-              #  print subkey
-              #   path = key_paths[0] + "\\" + subkey
-              #   key = OpenKey(HKEY_LOCAL_MACHINE, path, 0,KEY_SET_VALUE)
-                try:
-                    if "{" not in subkey and subkey not in programs:
-                        programs.append(subkey)
-                except Exception, ex:
-                    pass
-                    # if not "{" in subkey:
-                    #     programs.append(str(subkey))
-
-            except Exception, ex:
-                print ex
+                              sSubKeyName=key_path)
+    for subkey in names:
+        if "{" not in subkey and subkey not in programs:
+            programs.append(subkey)
     return programs
 
 

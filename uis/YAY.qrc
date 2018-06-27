@@ -1,6 +1,11 @@
 <RCC>
   <qresource prefix="/">
+    <file>275718_145721.jpeg</file>
     <file>../מסמכים/241318_231310.jpeg</file>
     <file>../מסמכים/202018_202052.jpeg</file>
+  </qresource>
+  <qresource prefix="newPrefix">
+    <file>27718_150702.jpeg</file>
+    <file>275718_145721.jpeg</file>
   </qresource>
 </RCC>

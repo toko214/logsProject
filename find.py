@@ -64,6 +64,10 @@ class Ui_MainWindow(object):
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setSizeGripEnabled(False)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
+        self.lab = QtGui.QLabel(MainWindow)
+        self.lab.setText("")
+        self.lab.setObjectName(_fromUtf8("lab"))
+        self.statusbar.addWidget(self.lab)
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)

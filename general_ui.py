@@ -13,7 +13,6 @@ try:
 except AttributeError:
     def _fromUtf8(s):
         return s
-
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
@@ -21,9 +20,8 @@ try:
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
+icons = {"Installed on pc": "icons/development.png","Password": "icons/key.png", "History": "icons/history.png", "Cookies":"icons/cookie.png", "Cache":"icons/accounting.png", "Bookmarks":"icons/notebook.png", "Contacts":"icons/accounting.png","Messages":"icons/accounting.png","Accounts":"icons/accounting.png"}
 
-icons = {"Password":"icons/key.png", "History":"icons/history.png", "Cookies":"icons/cookie.png", "Cache":"icons/accounting.png", "Bookmarks":"icons/notebook.png"}
-icons.setdefault("Cache")
 
 class general_apps_ui(object):
     def setupUi(self, MainWindow, tree_items, name):
@@ -34,7 +32,7 @@ class general_apps_ui(object):
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.treeWidget = QtGui.QTreeWidget(self.centralwidget)
-        self.treeWidget.setSelectionMode(QtGui.QAbstractItemView.ContiguousSelection)
+        self.treeWidget.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.treeWidget.setIndentation(0)
         self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
         for it in tree_items:
@@ -58,8 +56,8 @@ class general_apps_ui(object):
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
         self.menuEdit = QtGui.QMenu(self.menubar)
         self.menuEdit.setObjectName(_fromUtf8("menuEdit"))
-        self.menuView = QtGui.QMenu(self.menubar)
-        self.menuView.setObjectName(_fromUtf8("menuView"))
+        # self.menuView = QtGui.QMenu(self.menubar)
+        # self.menuView.setObjectName(_fromUtf8("menuView"))
         self.menuHelp = QtGui.QMenu(self.menubar)
         self.menuHelp.setObjectName(_fromUtf8("menuHelp"))
         MainWindow.setMenuBar(self.menubar)
@@ -76,10 +74,10 @@ class general_apps_ui(object):
         self.actionSelect_All.setObjectName(_fromUtf8("actionSelect_All"))
         self.actionDeselect_All = QtGui.QAction(MainWindow)
         self.actionDeselect_All.setObjectName(_fromUtf8("actionDeselect_All"))
-        self.actionRefresh = QtGui.QAction(MainWindow)
-        self.actionRefresh.setObjectName(_fromUtf8("actionRefresh"))
-        self.actionAbout = QtGui.QAction(MainWindow)
-        self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
+        # self.actionRefresh = QtGui.QAction(MainWindow)
+        # self.actionRefresh.setObjectName(_fromUtf8("actionRefresh"))
+        # self.actionAbout = QtGui.QAction(MainWindow)
+        # self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
         self.actionTurorial = QtGui.QAction(MainWindow)
         self.actionTurorial.setObjectName(_fromUtf8("actionTurorial"))
         self.menuFile.addAction(self.actionSave_Selected_Items)
@@ -89,14 +87,17 @@ class general_apps_ui(object):
         self.menuEdit.addSeparator()
         self.menuEdit.addAction(self.actionSelect_All)
         self.menuEdit.addAction(self.actionDeselect_All)
-        self.menuView.addAction(self.actionRefresh)
-        self.menuHelp.addAction(self.actionAbout)
+        # self.menuView.addAction(self.actionRefresh)
+        # self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionTurorial)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
-        self.menubar.addAction(self.menuView.menuAction())
+        # self.menubar.addAction(self.menuView.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
-
+        self.lab = QtGui.QLabel(MainWindow)
+        self.lab.setText("")
+        self.lab.setObjectName(_fromUtf8("lab"))
+        self.statusbar.addWidget(self.lab)
         self.retranslateUi(MainWindow, name)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -110,14 +111,14 @@ class general_apps_ui(object):
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
         self.menuEdit.setTitle(_translate("MainWindow", "Edit", None))
         self.menuHelp.setTitle(_translate("MainWindow", "Help", None))
-        self.menuView.setTitle(_translate("MainWindow", "View", None))
+       # self.menuView.setTitle(_translate("MainWindow", "View", None))
         self.actionExit.setText(_translate("MainWindow", "Exit", None))
         self.actionSave_Selected_Items.setText(_translate("MainWindow", "Save Selected Items", None))
         self.actionFind.setText(_translate("MainWindow", "Find", None))
         self.actionSelect_All.setText(_translate("MainWindow", "Select All", None))
         self.actionDeselect_All.setText(_translate("MainWindow", "Deselect All", None))
-        self.actionRefresh.setText(_translate("MainWindow", "Refresh", None))
-        self.actionAbout.setText(_translate("MainWindow", "About", None))
+        # self.actionRefresh.setText(_translate("MainWindow", "Refresh", None))
+        # self.actionAbout.setText(_translate("MainWindow", "About", None))
         self.actionTurorial.setText(_translate("MainWindow", "Tutorial", None))
 
 
@@ -162,9 +163,10 @@ class general_ui(object):
         self.statusbar.setSizeGripEnabled(True)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         MainWindow.setStatusBar(self.statusbar)
-        lab = QtGui.QLabel(MainWindow)
-        lab.setText("yooooooooooooooooooooooooooo")
-        self.statusbar.addWidget(lab)
+        self.lab = QtGui.QLabel(MainWindow)
+        self.lab.setText("")
+        self.lab.setObjectName(_fromUtf8("lab"))
+        self.statusbar.addWidget(self.lab)
         self.actionExit = QtGui.QAction(MainWindow)
         self.actionExit.setObjectName(_fromUtf8("actionExit"))
         self.actionSave_Selected_Items = QtGui.QAction(MainWindow)
@@ -175,8 +177,8 @@ class general_ui(object):
         self.actionSelect_All.setObjectName(_fromUtf8("actionSelect_All"))
         self.actionDeselect_All = QtGui.QAction(MainWindow)
         self.actionDeselect_All.setObjectName(_fromUtf8("actionDeselect_All"))
-        self.actionAbout = QtGui.QAction(MainWindow)
-        self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
+        # self.actionAbout = QtGui.QAction(MainWindow)
+        # self.actionAbout.setObjectName(_fromUtf8("actionAbout"))
         self.actionRefresh = QtGui.QAction(MainWindow)
         self.actionRefresh.setObjectName(_fromUtf8("actionRefresh"))
         self.actionTurorial = QtGui.QAction(MainWindow)
@@ -191,7 +193,7 @@ class general_ui(object):
         self.menuEdit.addAction(self.actionSelect_All)
         self.menuEdit.addAction(self.actionDeselect_All)
         self.menuView.addAction(self.actionRefresh)
-        self.menuHelp.addAction(self.actionAbout)
+        # self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionTurorial)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
@@ -217,6 +219,6 @@ class general_ui(object):
         self.actionFind.setText(_translate("MainWindow", "Find", None))
         self.actionSelect_All.setText(_translate("MainWindow", "Select All", None))
         self.actionDeselect_All.setText(_translate("MainWindow", "Deselect All", None))
-        self.actionAbout.setText(_translate("MainWindow", "About", None))
+        # self.actionAbout.setText(_translate("MainWindow", "About", None))
         self.actionTurorial.setText(_translate("MainWindow", "Tutorial", None))
         self.actionRefresh.setText(_translate("MainWindow", "Refresh", None))

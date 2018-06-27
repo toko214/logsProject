@@ -29,14 +29,14 @@ def get_all_cookies():
                 creation = str(datetime.fromtimestamp(cookie[4] / 1000000).strftime('%Y-%m-%d %H:%M:%S'))
                 expiry = str(datetime.fromtimestamp(cookie[3] / 1000000).strftime('%Y-%m-%d %H:%M:%S'))
                 inner_dict = {"name": cookie[1], 'value': cookie[2], 'creationTime': creation, 'expiry': expiry}
-                if not cookie[0] in cookies:
+                if not cookie[0] in cookies_dict:
                     cookies_dict[cookie[0]] = [inner_dict]
                 else:
                     cookies_dict[cookie[0]].append(inner_dict)
             cookies.append(cookies_dict)
     if len(cookies) > 0:
         if len(errs) > 1:
-            return [cookies, errs]
-        return [cookies]
+            return [cookies[0], errs]
+        return [cookies[0]]
     errs.append([1, select_statement1])
     return errs

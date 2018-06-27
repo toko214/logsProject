@@ -52,7 +52,7 @@ def history():
             HISTORY.append(HISTORY_DICT)
     if len(HISTORY) > 0:
         if len(errs) > 1:
-            return [HISTORY, errs]
-        return [HISTORY]
+            return [HISTORY[0], errs]
+        return [HISTORY[0]]
     errs.append([1, select_statement1])
     return errs

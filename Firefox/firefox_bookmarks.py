@@ -36,13 +36,15 @@ def bookmarks():
                         date = str(datetime.fromtimestamp(row[3] / 1000000).strftime('%Y-%m-%d %H:%M:%S'))
                         inner_dict['date_added'] = date
                         date = str(datetime.fromtimestamp(row[4] / 1000000).strftime('%Y-%m-%d %H:%M:%S'))
-                        inner_dict['dare_modified'] = date
+                        inner_dict['date_modified'] = date
                         results2.remove(url)
                         BOOK_MARKS_DICT[fk] = inner_dict
+                        break
         BOOKMARKS.append(BOOK_MARKS_DICT)
     if len(BOOKMARKS) > 0:
         if len(errs) > 1:
-            return [BOOKMARKS,errs]
-        return [BOOKMARKS]
+            print "asd"
+            return [BOOKMARKS[0],errs]
+        return [BOOKMARKS[0]]
     errs.append([1, select_statement1])
     return errs

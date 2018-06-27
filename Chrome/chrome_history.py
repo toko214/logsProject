@@ -33,7 +33,6 @@ def get_chrome_history():
                 if url[0] == visit[1]:
                     if url[0] not in THE_DICT:
                         inner_dict = {}
-                        inner_dict['url_id'] = url[0]
                         inner_dict['url'] = url[1]
                         inner_dict['visit_time'] = [str(ut.real_time_google(visit[2]))]
                         inner_dict['visit_duration'] = [str(ut.real_time_google(visit[6], True))]
@@ -41,6 +40,12 @@ def get_chrome_history():
                     else:
                         THE_DICT[url[0]]['visit_time'].append(str(ut.real_time_google(visit[2])))
                         THE_DICT[url[0]]['visit_duration'].append(str(ut.real_time_google(visit[6], True)))
+        searches = {}
+        for search in results4:
+            if search[1] in THE_DICT:
+                url = THE_DICT[search[1]]
+                searches[search[2]] = url
         #THE_DICT['google_search'] = results4
-        return [THE_DICT]
+        return [THE_DICT, searches]
     return ['err', 1, select_statement2]
+

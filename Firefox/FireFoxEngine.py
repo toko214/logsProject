@@ -17,36 +17,7 @@ class FireFoxEngine():
         else:
             self.is_valid = True
         if self.is_valid:
-            self.dir_path = os.getcwd() + "/saved/Firefox/"
-            print os.path.dirname(self.dir_path)
-            if not os.path.exists(os.path.dirname(self.dir_path)):
-                os.makedirs(os.path.dirname(self.dir_path))
             self.info_bank = {}
-
-    def do(self, props):
-        if props == 'all':
-            t = threading.Thread(target=self.get_bookmarks)
-            t.start()
-            t = threading.Thread(target=self.get_cookies)
-            t.start()
-            t = threading.Thread(target=self.get_history)
-            t.start()
-            t = threading.Thread(target=self.get_saved_password)
-            t.start()
-        else:
-            if props['Saved Passowrd']:
-                t = threading.Thread(target=self.get_saved_password)
-                t.start()
-
-            if props['Bookmarks']:
-                t = threading.Thread(target=self.get_bookmarks)
-                t.start()
-            if props['Cookies']:
-                t = threading.Thread(target=self.get_cookies)
-                t.start()
-            if props['History']:
-                t = threading.Thread(target=self.get_history)
-                t.start()
 
     def get_bookmarks(self):
         info = firefox_bookmarks.bookmarks()
@@ -54,36 +25,28 @@ class FireFoxEngine():
             err.error_handle(info[1:], self.name)
         else:
             self.info_bank['bookmarks'] = info[0]
-            f = open(self.dir_path + 'bookmarks.txt','w')
-            f.write(str(self.info_bank['bookmarks']))
-            f.close()
+            return info[0]
 
     def get_history(self):
-        info =  firefoxHistory.history()
+        info = firefoxHistory.history()
         if info[0] == 'err':
             err.error_handle(info[1:], self.name)
         else:
-            self.info_bank['history'] = info
-            f = open(self.dir_path + 'history.txt','w')
-            f.write(str(self.info_bank['history']))
-            f.close()
+            self.info_bank['history'] = info[0]
+            return info[0]
 
     def get_saved_password(self):
         info = firepwd.get_saved_password()
         if info[0] == 'err':
             err.error_handle(info[1:], self.name)
         else:
-            self.info_bank['passwords'] = info[0]
-            f = open(self.dir_path + 'passwords.txt','w')
-            f.write(str(self.info_bank['passwords']))
-            f.close()
+            self.info_bank['passwords'] = info
+            return info
 
     def get_cookies(self):
-        info =  firefox_cookie.get_all_cookies()
+        info = firefox_cookie.get_all_cookies()
         if info[0] == 'err':
             err.error_handle(info[1:], self.name)
         else:
-            self.info_bank['cookies'] = info
-            f = open(self.dir_path + 'cookies.txt','w')
-            f.write(str(self.info_bank['cookies']))
-            f.close()
+            self.info_bank['cookies'] = info[0]
+            return info[0]

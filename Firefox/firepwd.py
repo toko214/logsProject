@@ -269,6 +269,5 @@ def get_saved_password():
             p = repr(DES3.new(key, DES3.MODE_CBC, iv).decrypt(ciphertext))
             indx = p.find('\\x0')
             p = p[1:indx]
-
-            password_list.append((site,user,p))
+            password_list.append([site, user, p])
     return password_list

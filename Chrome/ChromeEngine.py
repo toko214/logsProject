@@ -36,7 +36,7 @@ class ChromeEngine:
             err.error_handle([info[1:]], self.name)
         else:
             self.info_bank['history'] = info
-            return info[0]
+            return info
 
     def get_chrome_bookmarks(self):
         info = chrome_bookmarks.get_bookmarks()
